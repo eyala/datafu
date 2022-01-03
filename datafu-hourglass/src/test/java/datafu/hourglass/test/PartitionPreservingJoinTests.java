@@ -39,7 +39,8 @@ import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.codehaus.jackson.node.NullNode;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -56,7 +57,7 @@ import datafu.hourglass.test.util.DailyTrackingWriter;
 @Test(groups="pcl")
 public class PartitionPreservingJoinTests extends TestBase
 {
-  private Logger _log = Logger.getLogger(PartitionPreservingJoinTests.class);
+  private Logger _log = LogManager.getLogger(PartitionPreservingJoinTests.class);
   
   private Path _impressionEventPath = new Path(getDataPath(), "tracking/impressions");
   private Path _clickEventPath = new Path(getDataPath(), "tracking/clicks");

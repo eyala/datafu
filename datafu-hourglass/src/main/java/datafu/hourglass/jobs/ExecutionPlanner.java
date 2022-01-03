@@ -32,7 +32,8 @@ import java.util.TreeMap;
 
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import datafu.hourglass.fs.DatePath;
 import datafu.hourglass.fs.DateRange;
@@ -45,7 +46,7 @@ import datafu.hourglass.fs.PathUtils;
  */
 public abstract class ExecutionPlanner
 {
-  private final Logger _log = Logger.getLogger(ExecutionPlanner.class);
+  private final Logger _log = LogManager.getLogger(ExecutionPlanner.class);
   
   private FileSystem _fileSystem;
   private Properties _props;

@@ -30,7 +30,8 @@ import java.util.regex.Pattern;
 
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import datafu.hourglass.fs.PathUtils;
 
@@ -64,7 +65,7 @@ import datafu.hourglass.fs.PathUtils;
  */
 public class ReduceEstimator
 {
-  private final Logger _log = Logger.getLogger(ReduceEstimator.class);
+  private final Logger _log = LogManager.getLogger(ReduceEstimator.class);
   
   private final Set<Path> inputPaths = new HashSet<Path>(); 
   private final Map<Path,String> pathToTag = new HashMap<Path,String>();

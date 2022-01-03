@@ -38,7 +38,8 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.PathFilter;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 
 import datafu.hourglass.avro.AvroMultipleInputsKeyInputFormat;
@@ -162,7 +163,7 @@ import datafu.hourglass.schemas.PartitionPreservingSchemas;
  */
 public abstract class AbstractPartitionPreservingIncrementalJob extends IncrementalJob
 {
-  private final Logger _log = Logger.getLogger(AbstractPartitionPreservingIncrementalJob.class);
+  private final Logger _log = LogManager.getLogger(AbstractPartitionPreservingIncrementalJob.class);
   
   private List<Report> _reports = new ArrayList<Report>();
   private PartitioningMapper _mapper;

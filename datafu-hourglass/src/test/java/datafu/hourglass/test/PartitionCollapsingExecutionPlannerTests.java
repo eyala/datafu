@@ -38,7 +38,8 @@ import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.generic.GenericDatumWriter;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.hadoop.fs.Path;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -53,7 +54,7 @@ import datafu.hourglass.test.util.DailyTrackingWriter;
 
 public class PartitionCollapsingExecutionPlannerTests extends TestBase
 {
-  private Logger _log = Logger.getLogger(PartitionCollapsingTests.class);
+  private Logger _log = LogManager.getLogger(PartitionCollapsingTests.class);
   
   private Path _inputPath = new Path(getDataPath(), "input");
   private Path _outputPath = new Path(getDataPath(), "output");

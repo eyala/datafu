@@ -42,7 +42,8 @@ import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.PathFilter;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 
 /**
@@ -51,7 +52,7 @@ import org.apache.log4j.Logger;
  */
 public class PathUtils
 {
-  private static Logger _log = Logger.getLogger(PathUtils.class);
+  private static Logger _log = LogManager.getLogger(PathUtils.class);
   
   public final static TimeZone timeZone = TimeZone.getTimeZone("UTC");    
   public static final SimpleDateFormat datedPathFormat = new SimpleDateFormat("yyyyMMdd");  

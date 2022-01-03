@@ -39,7 +39,8 @@ import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -56,7 +57,7 @@ import datafu.hourglass.test.util.DailyTrackingWriter;
 @Test(groups="pcl")
 public class PartitionCollapsingTests extends TestBase
 {
-  private Logger _log = Logger.getLogger(PartitionCollapsingTests.class);
+  private Logger _log = LogManager.getLogger(PartitionCollapsingTests.class);
   
   private Path _inputPath = new Path(getDataPath(), "input");
   private Path _outputPath = new Path(getDataPath(), "output");

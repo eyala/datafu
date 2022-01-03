@@ -21,7 +21,7 @@ import java.io._
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ArrayBuffer
 import datafu.spark.ScalaPythonBridge
-import org.apache.log4j.Logger
+import org.apache.logging.log4j.{Logger,LogManager}
 import org.apache.spark.api.python.PythonUtils
 import org.apache.spark.deploy.PythonRunner
 import org.apache.spark.util.Utils
@@ -40,7 +40,7 @@ import org.apache.spark.util.Utils
 case class SparkPythonRunner(pyPaths: String,
                              otherArgs: Array[String] = Array()) {
 
-  val logger: Logger = Logger.getLogger(getClass)
+  val logger: Logger = LogManager.getLogger(getClass)
   val (reader, writer, process) = initPythonEnv()
 
   def runPyFile(pythonFile: String): String = {

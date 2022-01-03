@@ -33,7 +33,8 @@ import org.apache.hadoop.mapreduce.lib.input.CombineFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.CombineFileRecordReader;
 import org.apache.hadoop.mapreduce.lib.input.CombineFileSplit;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import datafu.hourglass.jobs.AbstractPartitionPreservingIncrementalJob;
 
@@ -44,7 +45,7 @@ import datafu.hourglass.jobs.AbstractPartitionPreservingIncrementalJob;
  */
 public class CombinedAvroKeyInputFormat<T> extends CombineFileInputFormat<AvroKey<T>, NullWritable> 
 {
-  private final Logger LOG = Logger.getLogger(AbstractPartitionPreservingIncrementalJob.class);
+  private final Logger LOG = LogManager.getLogger(AbstractPartitionPreservingIncrementalJob.class);
 
   public static class CombinedAvroKeyRecordReader<T> extends AvroKeyRecordReader<T>
   {

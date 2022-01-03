@@ -34,7 +34,8 @@ import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.MapContext;
 import org.apache.hadoop.mapreduce.TaskInputOutputContext;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 
 import datafu.hourglass.fs.PathUtils;
@@ -53,7 +54,7 @@ import datafu.hourglass.schemas.PartitionCollapsingSchemas;
  */
 public class CollapsingMapper extends ObjectMapper implements Serializable
 {
-  private static Logger _log = Logger.getLogger(CollapsingMapper.class);
+  private static Logger _log = LogManager.getLogger(CollapsingMapper.class);
   
   private transient IdentityMapCollector _mapCollector;
   private transient TimeMapCollector _timeMapCollector;

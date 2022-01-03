@@ -55,6 +55,7 @@ cleanEclipse {
 }
 
 dependencies {
+    compile "org.apache.logging.log4j:log4j-api:$log4jVersion"
     compile "org.scala-lang:scala-library:$scalaVersion"
     compile "org.apache.spark:spark-core_" + scalaCompatVersion + ":" + sparkVersion
     compile "org.apache.spark:spark-hive_" + scalaCompatVersion + ":" + sparkVersion

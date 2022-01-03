@@ -26,7 +26,7 @@ import java.util.{MissingResourceException, ServiceLoader}
 
 import scala.collection.JavaConverters._
 
-import org.apache.log4j.Logger
+import org.apache.logging.log4j.{Logger,LogManager}
 
 
 /**
@@ -70,7 +70,7 @@ object PythonPathsManager {
   case class ResolvedResource(resource: PythonResource,
                               resolvedLocation: String)
 
-  private val logger: Logger = Logger.getLogger(getClass)
+  private val logger: Logger = LogManager.getLogger(getClass)
 
   val resources: Seq[ResolvedResource] =
     ServiceLoader
@@ -98,14 +98,14 @@ object PythonPathsManager {
         throw new IOException(
           "Could not find resource in absolute path: " + resource.resourcePath)
       } else {
-        logger.info("Using file absolute path: " + resource.resourcePath)
+        logger.info("Using file absolute path: {}", resource.resourcePath)
         resource.resourcePath
       }
     } else {
       Option(getClass.getClassLoader.getResource(resource.resourcePath)) match {
         case None =>
           logger.error(
-            "Didn't find resource in classpath! resource path: " + resource.resourcePath)
+            "Didn't find resource in classpath! resource path: {}", resource.resourcePath)
           throw new MissingResourceException(
             "Didn't find resource in classpath!",
             resource.getClass.getName,

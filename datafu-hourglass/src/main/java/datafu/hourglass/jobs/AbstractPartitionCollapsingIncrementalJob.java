@@ -34,7 +34,8 @@ import org.apache.avro.mapreduce.AvroKeyInputFormat;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 
 import datafu.hourglass.avro.AvroDateRangeMetadata;
@@ -186,7 +187,7 @@ import datafu.hourglass.schemas.PartitionCollapsingSchemas;
  */
 public abstract class AbstractPartitionCollapsingIncrementalJob extends IncrementalJob
 {
-  private final Logger _log = Logger.getLogger(AbstractPartitionCollapsingIncrementalJob.class);
+  private final Logger _log = LogManager.getLogger(AbstractPartitionCollapsingIncrementalJob.class);
   
   private List<Report> _reports = new ArrayList<Report>();
   protected boolean _reusePreviousOutput;

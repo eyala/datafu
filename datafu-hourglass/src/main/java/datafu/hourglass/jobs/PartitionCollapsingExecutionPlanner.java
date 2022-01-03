@@ -35,7 +35,8 @@ import java.util.SortedMap;
 import org.apache.avro.Schema;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import datafu.hourglass.avro.AvroDateRangeMetadata;
 import datafu.hourglass.fs.DatePath;
@@ -74,7 +75,7 @@ import datafu.hourglass.fs.PathUtils;
  */
 public class PartitionCollapsingExecutionPlanner extends ExecutionPlanner
 {
-  private final Logger _log = Logger.getLogger(PartitionCollapsingExecutionPlanner.class);
+  private final Logger _log = LogManager.getLogger(PartitionCollapsingExecutionPlanner.class);
 
   private SortedMap<Date,DatePath> _outputPathsByDate;
   private boolean _reusePreviousOutput;

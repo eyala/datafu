@@ -36,7 +36,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.IOUtils;
 import org.apache.hadoop.metrics.jvm.JvmMetrics;
 import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.pig.data.Tuple;
@@ -49,7 +50,7 @@ public abstract class PigTests
   private String testFileDir;
   private String savedUserDir;
 
-  private static final Logger logger = Logger.getLogger(PigTests.class);
+  private static final Logger logger = LogManager.getLogger(PigTests.class);
 
   @org.testng.annotations.BeforeClass
   public void beforeClass()
@@ -57,7 +58,7 @@ public abstract class PigTests
     Logger.getRootLogger().removeAllAppenders();
     Logger.getRootLogger().addAppender(new ConsoleAppender(new PatternLayout(PatternLayout.TTCC_CONVERSION_PATTERN)));
     Logger.getRootLogger().setLevel(Level.INFO);
-    Logger.getLogger(JvmMetrics.class).setLevel(Level.OFF);
+    LogManager.getLogger(JvmMetrics.class).setLevel(Level.OFF);
 
     System.setProperty("pig.import.search.path", System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources");
 

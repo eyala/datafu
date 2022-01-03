@@ -36,7 +36,8 @@ import java.util.Map.Entry;
 import org.apache.avro.Schema;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import datafu.hourglass.fs.DatePath;
 import datafu.hourglass.fs.PathUtils;
@@ -64,7 +65,7 @@ import datafu.hourglass.fs.PathUtils;
  */
 public class PartitionPreservingExecutionPlanner extends ExecutionPlanner
 {
-  private final Logger _log = Logger.getLogger(PartitionPreservingExecutionPlanner.class);
+  private final Logger _log = LogManager.getLogger(PartitionPreservingExecutionPlanner.class);
   
   private SortedMap<Date,DatePath> _outputPathsByDate;
   private Map<String,String> _latestInputByPath = new HashMap<String,String>();

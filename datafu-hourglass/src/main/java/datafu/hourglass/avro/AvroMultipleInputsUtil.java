@@ -24,7 +24,8 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -37,7 +38,7 @@ import org.json.simple.parser.ParseException;
  */
 public class AvroMultipleInputsUtil
 {
-  private static final Logger _log = Logger.getLogger(AvroMultipleInputsUtil.class);
+  private static final Logger _log = LogManager.getLogger(AvroMultipleInputsUtil.class);
   
   private static final String CONF_INPUT_KEY_SCHEMA = "avro.schema.multiple.inputs.keys";
   
@@ -67,11 +68,11 @@ public class AvroMultipleInputsUtil
       for (Object keyObj : schemas.keySet())
       {
         String key = (String)keyObj;
-        _log.info("Checking against " + key);
+        _log.info("Checking against {}", key);
         if (path.startsWith(key))
         {
           schema = new Schema.Parser().parse((String)schemas.get(key));
-          _log.info("Input schema found: " + schema.toString(true));
+          _log.info("Input schema found: {}", schema.toString(true));
           break;
         }
       }

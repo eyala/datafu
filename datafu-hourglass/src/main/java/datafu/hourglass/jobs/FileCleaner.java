@@ -28,7 +28,8 @@ import java.util.Set;
 
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * Used to remove files from the file system when they are no longer needed.
@@ -36,7 +37,7 @@ import org.apache.log4j.Logger;
  */
 public class FileCleaner
 {
-  private final Logger log = Logger.getLogger(FileCleaner.class);
+  private final Logger log = LogManager.getLogger(FileCleaner.class);
   
   private final Set<Path> garbage = new HashSet<Path>();
   private final FileSystem fs;

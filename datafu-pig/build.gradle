@@ -166,7 +166,9 @@ dependencies {
   compile "joda-time:joda-time:$jodaTimeVersion"
 
   testCompile "org.apache.pig:pigunit:$pigVersion"
-  testCompile "log4j:log4j:$log4jVersion"
+  
+  testCompile "org.apache.logging.log4j:log4j-api:$log4jVersion"
+  testCompile "org.apache.logging.log4j:log4j-core:$log4jVersion"
   testCompile "jline:jline:$jlineVersion"
   testCompile "org.antlr:antlr:$antlrVersion"
   testCompile "commons-io:commons-io:$commonsIoVersion"

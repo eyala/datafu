@@ -25,7 +25,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import datafu.hourglass.fs.DateRange;
 import datafu.hourglass.fs.PathUtils;
@@ -36,7 +37,7 @@ import datafu.hourglass.fs.PathUtils;
  */
 public class DateRangePlanner
 {
-  private final static Logger _log = Logger.getLogger(DateRangePlanner.class);
+  private final static Logger _log = LogManager.getLogger(DateRangePlanner.class);
   
   /**
    * Determines the date range of inputs which should be processed.

@@ -40,7 +40,8 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 
 import datafu.hourglass.avro.CombinedAvroKeyInputFormat;
@@ -87,7 +88,7 @@ import datafu.hourglass.fs.PathUtils;
  */
 public abstract class AbstractNonIncrementalJob extends TimeBasedJob
 {
-  private final Logger _log = Logger.getLogger(AbstractNonIncrementalJob.class);
+  private final Logger _log = LogManager.getLogger(AbstractNonIncrementalJob.class);
     
   private boolean _combineInputs;
   private Report _report;
