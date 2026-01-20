@@ -62,7 +62,7 @@ Let's simplify our example by asking a different question - how many accounts ha
 val numberOfAccountsWithAtLeastFiveElements = topFiveElementsPerAccount.filter("size(elements) > 4").count
 ```
 
-Our first table will have the following characteristics - about 300 million accounts, with the "biggest" account having about 500 elements. How long will this code take to run? (all our experiments will use a small cluster of 8 machines with 80GB memory and 16 cores). The naive Spark version takes about 24 seconds, and the DataFu variant takes 20. That's not long, and the difference isn't that big. But what if we have more skew? If we add up to a million records with the same _account_id_  it doesn't change the time it takes for either one to run. But if we increase the skew more we will see that the runtime of the naive solution increases. For example, with 10 million additional records with the same _account_id_, the runtime rises to around 44 seconds.  With 50 million additional records, the naive run time rises to 160. With 100 million, 340 seconds. At 150 million records the naive solution can no longer succeed. The DataFu solution, on the other hand, continues to run in 20-23 seconds. (you can see all the runtimes in the table at the end of this post)
+Our first table will have the following characteristics - about 300 million accounts, with the "biggest" account having about 500 elements. How long will this code take to run? (all our experiments will use a small cluster of 8 machines with 80GB memory and 16 cores). The naive Spark version takes about 24 seconds, and the DataFu variant takes 20. That's not long, and the difference isn't that big. But what if we have more skew? If we add up to a million records with the same _account_id_  it doesn't change the time it takes for either one to run. But if we increase the skew more we will see that the runtime of the naive solution increases. For example, with 10 million additional records with the same _account_id_, the runtime rises to around 44 seconds.  With 50 million additional records, the naive run time rises to 160. With 100 million, 340 seconds. At 150 million records the naive solution can no longer succeed - no executor can fit all these records in memory. The DataFu solution, on the other hand, continues to run in 20-23 seconds. (you can see all the runtimes in the table at the end of this post)
  
 Another approach worth trying in similar cases is window functions. A window function allows reducing unneeded rows earlier than the naive groupBy solution, though less aggressively than _collectNumberOrderedElements_. What if we use a window function to reduce the number of records before we collect them into an array? How long would that take? We could write code like this:
  
@@ -91,12 +91,41 @@ For up to a million skewed records, it runs in about 38 seconds - the worst of t
 
 What about when the total number of records rises? As expected, if there is no excessive skew the runtime of all three solutions rises linearly. In our experiments, 800 million records without skew took an average of 42 seconds with DataFu, 110 seconds with the naive solution, and 160 seconds with the window function.
 
-Why is _collectNumberOrderedElements_  more efficient? Part of the answer is maintaining an internal buffer that stores at most N sorted elements throughout the aggregation process (see [SparkOverwriteUDAFs.scala:200-219](https://github.com/apache/datafu/blob/main/datafu-spark/src/main/scala/spark/utils/overwrites/SparkOverwriteUDAFs.scala#L200)), applying the sort-and-slice logic during both the update phase when processing new elements and the merge phase when combining partial results. It was implemented using Spark's (internal) _DeclarativeAggregate_ framework. This allows the Catalyst optimizer to eliminate unnecessary data as early as possible, even more aggresively than if it had been implemented using the public [Aggregator](https://spark.apache.org/docs/latest/sql-ref-functions-udf-aggregate.html) interface or using window function.
+Why is _collectNumberOrderedElements_  more efficient? Part of the answer is maintaining an internal buffer that stores at most N sorted elements throughout the aggregation process (see [SparkOverwriteUDAFs.scala:200-219](https://github.com/apache/datafu/blob/main/datafu-spark/src/main/scala/spark/utils/overwrites/SparkOverwriteUDAFs.scala#L200) or the diagram below), applying the sort-and-slice logic during both the update phase when processing new elements and the merge phase when combining partial results.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                 UPDATE PHASE (per partition)                    │
+│                                                                 │
+│  Buffer: [A, C, E, G, I]  ←─── New element: D                   │
+│          (sorted, size=5)                                       │
+│                                                                 │
+│  Step 1: Concat → [A, C, E, G, I, D]                            │
+│  Step 2: Sort  → [A, C, D, E, G, I]                             │
+│  Step 3: Slice → [A, C, D, E, G]  (take first N)                │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│                 MERGE PHASE (across partitions)                 │
+│                                                                 │
+│  Buffer 1: [A, C, D, E, G]     Buffer 2: [B, F, H, J, K]        │
+│                                                                 │
+│  Step 1: Concat → [A, C, D, E, G, B, F, H, J, K]                │
+│  Step 2: Sort  → [A, B, C, D, E, F, G, H, J, K]                 │
+│  Step 3: Slice → [A, B, C, D, E]  (take first N)                │
+│                                                                 │
+│  Final Result: [A, B, C, D, E]                                  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
  
-In conclusion - even if your data doesn't have any skew, the DataFu _collectNumberOrderedElements_ outperforms both a regular groupBy and using window functions. When extreme skew is present, it becomes not only faster but the only viable option.
+It was implemented using Spark's (internal) _DeclarativeAggregate_ framework. This allows the Catalyst optimizer to eliminate unnecessary data as early as possible, even more aggresively than if it had been implemented using the public [Aggregator](https://spark.apache.org/docs/latest/sql-ref-functions-udf-aggregate.html) interface or using window function.
+  
+In conclusion - even if your data doesn't have any skew, the DataFu _collectNumberOrderedElements_ outperforms both a regular groupBy and using window functions. When extreme skew is present, it becomes not only faster but the only viable option. 
 
 ---
 <br>
 
-(A version of this post also appears in the [Apache DataFu blog](https://datafu.apache.org/blog))
+(A version of this post also appears in the [Technology At PayPal Blog](link-to-be-added-later)
  
